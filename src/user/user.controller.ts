@@ -10,6 +10,7 @@ import {
   HttpCode,
   UseGuards,
   Request,
+  Header,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/createUser.dto';
@@ -51,13 +52,49 @@ export class UserController {
     return 'Updated Successfully!';
   }
 
-  @Get()
+  @Get('*')
+  @Header('Content-Type', 'text/html') // Set the response header to indicate HTML content
   welcome(): string {
-    return 'Welcome to my backend assessment page. List of routes:\n' +
-      '- Sign In: /auth/signin\n' +
-      '- Sign Up: /auth\n' +
-      '- Update User: /user/:id\n' +
-      '- Stripe Webhook: /stripe/webhook';
+    return `
+    <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Welcome Page</title>
+        <style>
+          body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+          }
+          .container {
+            text-align: center;
+          }
+          ul {
+            list-style: none;
+            padding: 0;
+          }
+          li {
+            margin-bottom: 8px;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <h1>Ochapa's backend API assessment. <br>List of routes:</h1>
+          <ul>
+            <li>Sign Up: /user/signup</li>
+            <li>Sign In: /user/signin</li>            
+            <li>Update User: /:id</li>
+            <li>Stripe Webhook: /stripe/webhook</li>
+          </ul>
+        </div>
+      </body>
+      </html>
+    `;
   }
 
   // @Get(':id')
